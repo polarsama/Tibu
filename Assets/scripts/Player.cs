@@ -27,5 +27,8 @@ public class Player : MonoBehaviour
         transform.Rotate(0, x * Time.deltaTime * speedRotation, 0);
         transform.Translate(0, 0,y * Time.deltaTime * speed);
 
+        animator.SetFloat("VelX", x);
+        animator.SetFloat("VelY", y);
+
     }
 }
