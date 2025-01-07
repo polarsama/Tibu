@@ -1836,10 +1836,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 736726e810208784286ad0d66fc5e7b4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1199934034}
+      addedObject: {fileID: 1199934033}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 736726e810208784286ad0d66fc5e7b4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1199934033}
+      addedObject: {fileID: 1199934034}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 736726e810208784286ad0d66fc5e7b4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1199934037}
@@ -1900,7 +1900,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!95 &1199934036
 Animator:
@@ -1935,8 +1935,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce36df4d37829f64980e3dbf19291414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
-  speedRotation: 250
+  controller: {fileID: 0}
+  movementSpeed: 7
   sensibility: {x: 5, y: 5}
   animator: {fileID: 1199934036}
 --- !u!4 &1199934038 stripped
