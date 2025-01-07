@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 0;
-    public float speedRotation = 0;
+    private Rigidbody Rgb;
+
+    public CharacterController controller;
+
+    public float movementSpeed = 0;
+
     public Vector2 sensibility;
 
     public Animator animator;
 
-    private float x, y;
+    private float x, z, y;
     private new Transform camera;
 
     // Start is called before the first frame update
@@ -19,17 +23,20 @@ public class Player : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         camera = transform.Find("MainCamera");
+
+        Rgb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
         x = Input.GetAxis("Horizontal");
+        z = Input.GetAxis("Vertical");
 
-        y = Input.GetAxis("Vertical");
+        Vector3 move = (transform.forward * z + transform.right * x).normalized;
 
-        transform.Rotate(0, x * Time.deltaTime * speedRotation, 0);
-        transform.Translate(0, 0,y * Time.deltaTime * speed);
+        controller.Move(move);
+
 
         animator.SetFloat("VelX", x);
         animator.SetFloat("VelY", y);
