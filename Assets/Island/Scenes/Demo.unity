@@ -1000,9 +1000,9 @@ GameObject:
   - component: {fileID: 676387125}
   - component: {fileID: 676387124}
   - component: {fileID: 676387123}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1845,6 +1845,9 @@ PrefabInstance:
       addedObject: {fileID: 1199934037}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 736726e810208784286ad0d66fc5e7b4, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1199934039}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 736726e810208784286ad0d66fc5e7b4, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1199934036}
   m_SourcePrefab: {fileID: 100100000, guid: 736726e810208784286ad0d66fc5e7b4, type: 3}
 --- !u!1 &1199934032 stripped
@@ -1935,15 +1938,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce36df4d37829f64980e3dbf19291414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
-  movementSpeed: 7
-  sensibility: {x: 5, y: 5}
-  animator: {fileID: 1199934036}
+  movementSpeed: 10
+  rotationSpeed: 7
+  jumpForce: 5
+  groundCheckDistance: 0.2
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  sensibility: {x: 7, y: 7}
+  mainCamera: {fileID: 1896567521}
 --- !u!4 &1199934038 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 736726e810208784286ad0d66fc5e7b4, type: 3}
   m_PrefabInstance: {fileID: 1199934031}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1199934039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199934032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade6a2e403c39b042aff818b6e5fe2ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1217631443 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 446262, guid: bf5c716dea4419148879f65f4373d70d, type: 3}

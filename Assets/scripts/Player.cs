@@ -5,61 +5,103 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Rigidbody Rgb;
-
-    //public CharacterController controller;
-
     public float movementSpeed = 0;
+    public float rotationSpeed = 0;
+    public float jumpForce = 0;
+    public float groundCheckDistance = 0.3f;
+    public LayerMask groundMask;
+    public Vector2 sensibility = new Vector2(0, 0);
 
-    //public Vector2 sensibility;
+    [SerializeField] private Camera mainCamera;
+    private float xRotation = 0f;
+    private bool isGrounded;
 
-    //public Animator animator;
-
-    private float x, z, y;
-    //private new Transform camera;
-
-    // Start is called before the first frame update
     void Start()
     {
-        //Cursor.lockState = CursorLockMode.Locked;
-
-        //camera = transform.Find("MainCamera");
-
         Rgb = GetComponent<Rigidbody>();
+        Cursor.lockState = CursorLockMode.Locked;
+
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+            Debug.LogWarning("Main Camera no asignada, usando Camera.main");
+        }
+
+        if (Rgb != null)
+        {
+            Rgb.freezeRotation = true;
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        x = Input.GetAxis("Horizontal");
-        z = Input.GetAxis("Vertical");
+        HandleCameraRotation();
+        HandleMovement();
+        CheckGrounded();
+        HandleJump();
+    }
 
-        Vector3 move = (transform.forward * z + transform.right * x).normalized;
+    void HandleMovement()
+    {
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
 
-        //controller.Move(move);
+        // Obtener dirección relativa a la cámara
+        Vector3 cameraForward = mainCamera.transform.forward;
+        Vector3 cameraRight = mainCamera.transform.right;
 
+        // Mantener el movimiento horizontal
+        cameraForward.y = 0;
+        cameraRight.y = 0;
+        cameraForward.Normalize();
+        cameraRight.Normalize();
 
-        //animator.SetFloat("VelX", x);
-        //animator.SetFloat("VelY", y);
+        // Calcular dirección de movimiento
+        Vector3 moveDirection = (cameraForward * z + cameraRight * x).normalized;
 
+        if (moveDirection.magnitude >= 0.1f)
+        {
+            // Mover el personaje
+            Vector3 movement = moveDirection * movementSpeed * Time.deltaTime;
+            transform.position += movement;
 
-        //float hor = Input.GetAxis("Mouse X");
-        //float ver = Input.GetAxis("Mouse Y");
+            // Rotar el personaje hacia la dirección del movimiento
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
 
-        //if (hor != 0)
-        //{
-        //    transform.Rotate(Vector3.up * hor * sensibility);
-        //}
+    void HandleCameraRotation()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * sensibility.x;
+        float mouseY = Input.GetAxis("Mouse Y") * sensibility.y;
 
-        //if (ver != 0)
-        //{
-        //    float angle = (camera.localEulerAngles.x - ver * sensibility.y + 360) % 360;
+        // Rotar la cámara verticalmente
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -80f, 80f);
+        mainCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
-        //    if (angle > 180) { angle -= 360; }
-        //    angle = Mathf.Clamp(angle, -80, 80);
+        // Rotar el personaje horizontalmente (esto también rotará la cámara ya que es hija del personaje)
+        transform.Rotate(Vector3.up * mouseX);
+    }
 
-        //    camera.localEulerAngles = Vector3.right * angle;
-        //}
+    void CheckGrounded()
+    {
+        isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, groundCheckDistance + 0.1f, groundMask);
+    }
 
+    void HandleJump()
+    {
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            Rgb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
 
+    void OnDrawGizmos()
+    {
+        // Visualizar el raycast de detección de suelo
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position + Vector3.up * 0.1f, transform.position + Vector3.up * 0.1f + Vector3.down * (groundCheckDistance + 0.1f));
     }
 }
